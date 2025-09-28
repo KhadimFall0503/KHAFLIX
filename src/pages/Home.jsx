@@ -1,0 +1,38 @@
+import React from "react";
+import home from "../assets/home.jpg";
+import Tendances from "../components/Tendances"; // Mets ton image dans src/assets/
+
+const Home = () => {
+  return (
+    <div className="pt-16">
+      {/* Hero Section */}
+      <section
+        className="relative w-full h-[90vh] flex items-center justify-center text-center text-white"
+        style={{
+          backgroundImage: `url(${home})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Overlay sombre */}
+        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+
+        {/* Contenu du Hero */}
+        <div className="relative z-10 max-w-3xl px-4">
+          <h1 className="text-5xl font-bold mb-4">
+            Bienvenue sur Khaflix Clone
+          </h1>
+          <p className="text-lg mb-6">
+            Découvrez vos films et séries préférés en un seul endroit.
+          </p>
+          <button className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded text-white font-semibold transition">
+            Commencer
+          </button>
+        </div>
+      </section>
+      <Tendances />
+    </div>
+  );
+};
+
+export default Home;
