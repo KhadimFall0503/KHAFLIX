@@ -1,28 +1,35 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useParams } from "react-router-dom";
-import ImgDetail from "../assets/Detail.jpg";
+import ImgDetail from "../assets/Detail.jpg"; // image de fond
 
-const Detail = () => {
-  const { id } = useParams();
+const DetailCategorie = () => {
+  const { type, id } = useParams(); // type = "film" ou "serie"
+
   const [item, setItem] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
-  const fetchDetail = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/api/tendances/${id}/`
-      );
-      setItem(response.data);
-    } catch (error) {
-      console.error("Erreur récupération détails :", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        let url = "";
+        if (type === "film") url = `http://localhost:8000/api/films/${id}/`;
+        else if (type === "serie")
+          url = `http://localhost:8000/api/series/${id}/`;
+        else return;
+
+        const res = await axios.get(url);
+        setItem(res.data);
+      } catch (error) {
+        console.error("Erreur récupération détails :", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [type, id]);
 
   const showToast = (message, type = "success") => {
     setToast({ show: true, message, type });
@@ -31,12 +38,10 @@ const Detail = () => {
 
   const addToList = () => {
     if (!item) return;
-
-    const type = item.film ? "film" : "serie";
-    const idItem = item.film?.id || item.serie?.id;
-    const title = item.film?.title || item.serie?.title;
-    const description = item.film?.description || item.serie?.description;
-    const image = item.film?.image || item.serie?.image;
+    const idItem = item.id;
+    const title = item.title;
+    const description = item.description;
+    const image = item.image;
 
     let myList = JSON.parse(localStorage.getItem("myList")) || [];
     const exists = myList.some((el) => el.id === idItem && el.type === type);
@@ -50,20 +55,11 @@ const Detail = () => {
     }
   };
 
-  if (!item) {
-    return (
-      <div className="pt-24 text-center text-white">
-        <p>Chargement...</p>
-      </div>
-    );
-  }
+  if (loading)
+    return <p className="text-white text-center mt-10">Chargement...</p>;
 
-  const title = item.film ? item.film.title : item.serie.title;
-  const description = item.film
-    ? item.film.description
-    : item.serie.description;
-  const date = item.film ? item.film.date_sortie : item.serie.date_sortie;
-  const image = item.film ? item.film.image : item.serie.image;
+  if (!item)
+    return <p className="text-white text-center mt-10">Aucun détail trouvé.</p>;
 
   return (
     <>
@@ -90,15 +86,19 @@ const Detail = () => {
       <div className="pt-12 max-w-5xl mx-auto px-4 text-white flex flex-col md:flex-row gap-8">
         <div className="flex-1">
           <img
-            src={image}
-            alt={title}
-            className="w-full h-96 rounded-lg shadow-lg object-cover"
+            src={item.image || "/default-image.jpg"}
+            alt={item.title}
+            className="w-full h-96  rounded-lg shadow-lg object-cover"
           />
         </div>
         <div className="flex-1 flex flex-col justify-center">
-          <h1 className="text-4xl text-white font-bold mb-4">{title}</h1>
-          <p className="text-white mb-4">{description}</p>
-          <p className="text-white mb-4">Date de sortie: {date}</p>
+          <h1 className="text-4xl text-white font-bold mb-4">{item.title}</h1>
+          <p className="text-white mb-4">{item.description}</p>
+          {item.date_sortie && (
+            <p className="text-white mb-4">
+              Date de sortie: {item.date_sortie}
+            </p>
+          )}
           <button
             onClick={addToList}
             className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded font-semibold transition"
@@ -108,7 +108,7 @@ const Detail = () => {
         </div>
       </div>
 
-      {/* Toast Notification */}
+      {/* Toast */}
       {toast.show && (
         <div
           className={`fixed bottom-5 right-5 px-6 py-4 rounded shadow-lg text-white font-semibold transition-all ${
@@ -122,4 +122,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default DetailCategorie;

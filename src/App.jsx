@@ -1,25 +1,87 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Detail from "./components/Detail";
-import Categorie from "./components/Categorie";
 
 // Pages
 import Home from "./pages/Home";
 import MyList from "./pages/MyList";
 import Categories from "./pages/Categories";
+import Detail from "./components/Detail";
+import Login from "./pages/Login";
+import DetailCategorie from "./components/DetailCategorie";
+
+// PrivateRoute : protège les pages nécessitant authentification
+const PrivateRoute = ({ children }) => {
+  const token = localStorage.getItem("access");
+  return token ? children : <Navigate to="/login" replace />;
+};
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/my-list" element={<MyList />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/categories/:name" element={<Categorie />} />
+        {/* Login accessible sans authentification */}
+        <Route path="/login" element={<Login />} />
+
+        {/* Pages privées */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my-list"
+          element={
+            <PrivateRoute>
+              <MyList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/categories"
+          element={
+            <PrivateRoute>
+              <Categories />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/categories/:name"
+          element={
+            <PrivateRoute>
+              <Categories />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/detail/:id"
+          element={
+            <PrivateRoute>
+              <Detail />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/detail/:type/:id"
+          element={
+            <PrivateRoute>
+              <DetailCategorie />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Redirection vers accueil si route non trouvée */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
     </Router>
