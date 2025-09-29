@@ -4,12 +4,13 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import axios from "axios";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // menu mobile
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // dropdown catégories
   const [categories, setCategories] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
+  // Vérification du token et récupération des catégories
   useEffect(() => {
     const token = localStorage.getItem("access");
     setIsAuthenticated(!!token);
@@ -22,9 +23,11 @@ function Navbar() {
     }
   }, []);
 
+  // Déconnexion
   const handleLogout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
+    setIsAuthenticated(false); // met à jour la navbar immédiatement
     navigate("/login");
   };
 
@@ -45,15 +48,18 @@ function Navbar() {
   return (
     <nav className="bg-[#141414] fixed w-full z-50 shadow-md">
       <div className="flex items-center justify-between px-6 py-4">
+        {/* Logo */}
         <Link to="/" className="text-[#E50914] text-2xl font-extrabold">
           KHAFLIX
         </Link>
 
+        {/* Menu desktop */}
         <div className="hidden md:flex space-x-6 text-white font-medium items-center">
           <Link to="/" className="hover:text-gray-300">
             Accueil
           </Link>
 
+          {/* Dropdown catégories */}
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -101,6 +107,7 @@ function Navbar() {
           )}
         </div>
 
+        {/* Burger menu mobile */}
         <button
           className="md:hidden text-white"
           onClick={() => setIsOpen(!isOpen)}
@@ -109,6 +116,7 @@ function Navbar() {
         </button>
       </div>
 
+      {/* Menu mobile */}
       {isOpen && (
         <div className="md:hidden bg-[#141414] text-white px-6 pb-4 space-y-3 transition-all duration-300 ease-in-out">
           <Link
