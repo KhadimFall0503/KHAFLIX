@@ -63,28 +63,9 @@ const DetailCategorie = () => {
 
   return (
     <>
-      {/* Hero */}
-      <section
-        className="relative w-full h-[90vh] flex items-center justify-center text-center text-white"
-        style={{
-          backgroundImage: `url(${ImgDetail})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
-        <div className="relative z-10 max-w-3xl px-4">
-          <h1 className="text-5xl font-bold mb-4">Page Detail</h1>
-          <p className="text-lg mb-6 text-gray-300">
-            Ici vous trouverez tous les détails du film ou de la série
-            sélectionnée.
-          </p>
-        </div>
-      </section>
-
       {/* Détails */}
-      <div className="pt-12 max-w-5xl mx-auto px-4 text-white flex flex-col md:flex-row gap-8">
-        <div className="flex-1">
+      <div className="pt-16 max-w-5xl mx-auto px-4 text-white flex flex-col md:flex-row gap-8">
+        <div className="flex-1 pt-16">
           <img
             src={item.image || "/default-image.jpg"}
             alt={item.title}
