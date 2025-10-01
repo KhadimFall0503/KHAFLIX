@@ -1,6 +1,7 @@
 import React from "react";
 import home from "../assets/home.jpg";
-import Tendances from "../components/Tendances"; // Mets ton image dans src/assets/
+import Tendances from "../components/Tendances";
+import FoireQuestions from "../components/FoireQuestions";
 
 const Home = () => {
   return (
@@ -20,17 +21,18 @@ const Home = () => {
         {/* Contenu du Hero */}
         <div className="relative z-10 max-w-3xl px-4">
           <h1 className="text-5xl font-bold mb-4">
-            Bienvenue sur Khaflix Clone
+            Films et séries en illimité
           </h1>
           <p className="text-lg mb-6">
-            Découvrez vos films et séries préférés en un seul endroit.
+            Regardez où vous voulez. Annulez à tout moment.
           </p>
           <button className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded text-white font-semibold transition">
-            Commencer
+            Voir la Categorie
           </button>
         </div>
       </section>
       <Tendances />
+      <FoireQuestions />
     </div>
   );
 };

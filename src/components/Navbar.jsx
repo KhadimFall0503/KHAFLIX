@@ -1,33 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false); // menu mobile
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // dropdown catégories
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Vérification du token et récupération des catégories
+  // Récupération des catégories dès qu’on est authentifié
   useEffect(() => {
-    const token = localStorage.getItem("access");
-    setIsAuthenticated(!!token);
-
-    if (token) {
+    if (isAuthenticated) {
       axios
         .get("http://localhost:8000/api/categories/")
         .then((res) => setCategories(res.data))
         .catch((err) => console.error(err));
     }
-  }, []);
+  }, [isAuthenticated]);
 
-  // Déconnexion
   const handleLogout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    setIsAuthenticated(false); // met à jour la navbar immédiatement
+    logout();
     navigate("/login");
   };
 
@@ -48,18 +44,15 @@ function Navbar() {
   return (
     <nav className="bg-[#141414] fixed w-full z-50 shadow-md">
       <div className="flex items-center justify-between px-6 py-4">
-        {/* Logo */}
         <Link to="/" className="text-[#E50914] text-2xl font-extrabold">
           KHAFLIX
         </Link>
 
-        {/* Menu desktop */}
         <div className="hidden md:flex space-x-6 text-white font-medium items-center">
           <Link to="/" className="hover:text-gray-300">
             Accueil
           </Link>
 
-          {/* Dropdown catégories */}
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -69,21 +62,19 @@ function Navbar() {
             </button>
             {isDropdownOpen && (
               <div className="absolute top-full left-0 mt-2 bg-[#141414] shadow-lg rounded-md py-2 w-48">
-                {isAuthenticated && categories.length > 0 ? (
+                {categories.length > 0 ? (
                   categories.map(renderCategoryLink)
                 ) : (
                   <>
                     <Link
                       to="/categories/films"
                       className="block px-4 py-2 hover:bg-gray-700 transition"
-                      onClick={() => setIsDropdownOpen(false)}
                     >
                       Films
                     </Link>
                     <Link
                       to="/categories/series"
                       className="block px-4 py-2 hover:bg-gray-700 transition"
-                      onClick={() => setIsDropdownOpen(false)}
                     >
                       Séries
                     </Link>
@@ -107,7 +98,6 @@ function Navbar() {
           )}
         </div>
 
-        {/* Burger menu mobile */}
         <button
           className="md:hidden text-white"
           onClick={() => setIsOpen(!isOpen)}
@@ -116,7 +106,6 @@ function Navbar() {
         </button>
       </div>
 
-      {/* Menu mobile */}
       {isOpen && (
         <div className="md:hidden bg-[#141414] text-white px-6 pb-4 space-y-3 transition-all duration-300 ease-in-out">
           <Link
@@ -136,7 +125,7 @@ function Navbar() {
             </button>
             {isDropdownOpen && (
               <>
-                {isAuthenticated && categories.length > 0 ? (
+                {categories.length > 0 ? (
                   categories.map(renderCategoryLink)
                 ) : (
                   <>

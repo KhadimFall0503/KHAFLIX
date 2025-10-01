@@ -42,7 +42,9 @@ const Tendances = () => {
 
   return (
     <div className="pt-12 max-w-7xl mx-auto px-4">
-      <h2 className="text-3xl font-bold mb-2 text-white">Tendances</h2>
+      <h2 className="text-3xl font-bold mb-2 text-white">
+        Tendances Actuelles
+      </h2>
       <p className="text-gray-400 mb-6 font-semibold">
         Découvrez les films et séries les plus populaires du moment
       </p>

@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext"; // importer le contexte
 
-const Form = () => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // hook pour rediriger
+  const navigate = useNavigate();
+
+  const { login } = useContext(AuthContext); // utiliser login du contexte
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,9 +20,8 @@ const Form = () => {
         password,
       });
 
-      // Stocker les tokens
-      localStorage.setItem("access", response.data.access);
-      localStorage.setItem("refresh", response.data.refresh);
+      // Utiliser la fonction login du contexte
+      login(response.data.access);
 
       setMessage("✅ Connexion réussie !");
 
@@ -85,4 +87,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default Login;

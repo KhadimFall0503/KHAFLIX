@@ -19,7 +19,7 @@ const MyList = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 pt-16">
-      <h1 className="text-4xl font-bold text-white mb-6">Ma Liste</h1>
+      <h1 className="text-4xl font-bold text-white mb-6 pt-5">Ma Liste</h1>
 
       {myList.length === 0 ? (
         <p className="text-gray-400 text-center">Votre liste est vide.</p>

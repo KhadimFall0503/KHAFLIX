@@ -15,6 +15,10 @@ import Categories from "./pages/Categories";
 import Detail from "./components/Detail";
 import Login from "./pages/Login";
 import DetailCategorie from "./components/DetailCategorie";
+import FoireQuestions from "./components/FoireQuestions";
+
+// Contexte Auth
+import { AuthProvider } from "./context/AuthContext";
 
 // PrivateRoute : protège les pages nécessitant authentification
 const PrivateRoute = ({ children }) => {
@@ -24,67 +28,70 @@ const PrivateRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        {/* Login accessible sans authentification */}
-        <Route path="/login" element={<Login />} />
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          {/* Login accessible sans authentification */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Pages privées */}
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/my-list"
-          element={
-            <PrivateRoute>
-              <MyList />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/categories"
-          element={
-            <PrivateRoute>
-              <Categories />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/categories/:name"
-          element={
-            <PrivateRoute>
-              <Categories />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/detail/:id"
-          element={
-            <PrivateRoute>
-              <Detail />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/detail/:type/:id"
-          element={
-            <PrivateRoute>
-              <DetailCategorie />
-            </PrivateRoute>
-          }
-        />
+          {/* Pages privées */}
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/my-list"
+            element={
+              <PrivateRoute>
+                <MyList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/categories"
+            element={
+              <PrivateRoute>
+                <Categories />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/categories/:name"
+            element={
+              <PrivateRoute>
+                <Categories />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/detail/:id"
+            element={
+              <PrivateRoute>
+                <Detail />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/detail/:type/:id"
+            element={
+              <PrivateRoute>
+                <DetailCategorie />
+              </PrivateRoute>
+            }
+          />
 
-        {/* Redirection vers accueil si route non trouvée */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      <Footer />
-    </Router>
+          {/* Redirection vers accueil si route non trouvée */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+
+        <Footer />
+      </Router>
+    </AuthProvider>
   );
 }
 
