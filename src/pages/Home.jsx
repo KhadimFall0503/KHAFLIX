@@ -1,6 +1,7 @@
 import React from "react";
 import home from "../assets/home.jpg";
 import Tendances from "../components/Tendances";
+import About from "../components/About";
 import FoireQuestions from "../components/FoireQuestions";
 
 const Home = () => {
@@ -32,6 +33,7 @@ const Home = () => {
         </div>
       </section>
       <Tendances />
+      <About />
       <FoireQuestions />
     </div>
   );
