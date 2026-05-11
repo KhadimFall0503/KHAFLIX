@@ -55,23 +55,23 @@ const About = () => {
             <ul className="space-y-3 text-gray-300 text-lg">
               <li>
                 <span className="font-semibold text-white">
-                  🎬 Innovation :
+                  Innovation :
                 </span>{" "}
                 réinventer la façon de regarder et partager le divertissement.
               </li>
               <li>
-                <span className="font-semibold text-white">🌍 Diversité :</span>{" "}
+                <span className="font-semibold text-white"> Diversité :</span>{" "}
                 célébrer les talents et cultures du monde entier.
               </li>
               <li>
                 <span className="font-semibold text-white">
-                  ⚡ Accessibilité :
+                  Accessibilité :
                 </span>{" "}
                 rendre le streaming de qualité disponible pour tous.
               </li>
               <li>
                 <span className="font-semibold text-white">
-                  💎 Excellence :
+                   Excellence :
                 </span>{" "}
                 offrir une expérience fluide, immersive et sans limites.
               </li>
